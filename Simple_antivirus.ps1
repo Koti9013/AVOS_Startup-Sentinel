@@ -6,32 +6,46 @@ $tempPath  = "$env:TEMP\update_temp.ps1"
 
 Write-Host "--- Cheching for updates ---" -ForegroundColor Cyan
 
-$filesToUpdate = @("Simple antivirus.ps1", "README.md", "LICENSE.md")
-$repoUrl = 
+$repoOwner = "Koti9013"
+$repoName  = "Simple-antivirus_PowerShell-edition"
+$branch    = "main"
+
+$baseUrl = "https://raw.githubusercontent.com/Koti9013/Simple-antivirus_PowerShell-edition/refs/heads/main/"
+
+$filesToUpdate = @(
+    "Launcher(use-me-to-launch-the-antivirus.Ink",
+    "Simple_antivirus.ps1",
+    "LICENSE.md"
+)
+
+Write-Host "--- Simple Antivirus Launcher ---" -ForegroundColor Cyan
+Write-Host "[*] Checking for updates..."
 
 foreach ($fileName in $filesToUpdate) {
     $localPath = Join-Path $PSScriptRoot $fileName
-    $tempPath = "$localPath.tmp"
-    $remoteUrl = #Add
+    $tempPath  = "$localPath.tmp"
+    $remoteUrl = $baseUrl + $fileName
 
     try {
-        Invoke-WebRequest -Uri $remoteUrl -OutFile $tempPath -ErrorAction Stop -TimeoutSec 10
+        Invoke-WebRequest -Uri $remoteUrl -OutFile $tempPath -UseBasicParsing -ErrorAction Stop -TimeoutSec 10
         
-        $localHash = if (Test-Path $localPath) { (Get-FileHash $localPath).Hash } else { "" }
+        $localHash = if (Test-Path $localPath) { (Get-FileHash $localPath).Hash } else { "NONE" }
         $remoteHash = (Get-FileHash $tempPath).Hash
 
         if ($localHash -ne $remoteHash) {
             Write-Host "[!] Updating: $fileName" -ForegroundColor Yellow
             Move-Item -Path $tempPath -Destination $localPath -Force
         } else {
-            Write-Host "[✓] $fileName is up to date." -ForegroundColor Green
             Remove-Item $tempPath
         }
     } catch {
-        Write-Host "[!] Could not update $fileName (No connection)" -ForegroundColor Gray
+        Write-Host "[X] Failed to check $fileName (Server unreachable)" -ForegroundColor Gray
         if (Test-Path $tempPath) { Remove-Item $tempPath }
     }
 }
+
+Write-Host "[✓] All files are up to date!" -ForegroundColor Green
+Write-Host "---------------------------------"
 
 if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     Write-Host "Asking for administrator rights..." -ForegroundColor Yellow
