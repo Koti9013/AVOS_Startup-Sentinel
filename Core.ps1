@@ -7,15 +7,15 @@ $tempPath  = "$env:TEMP\update_temp.ps1"
 Write-Host "--- Cheching for updates ---" -ForegroundColor Cyan
 
 $repoOwner = "Koti9013"
-$repoName  = "Simple-antivirus_PowerShell-edition"
+$repoName  = "APOS_Startup-Sentinel"
 $branch    = "main"
 
 $baseUrl = "https://raw.githubusercontent.com/Koti9013/Simple-antivirus_PowerShell-edition/refs/heads/main/"
 
 $filesToUpdate = @(
-    "Simple_antivirus.ps1",
+    "README.md",
+    "Core.ps1",
     "LICENSE"
-    "README.md"
 )
 
 Write-Host "--- Simple Antivirus Launcher ---" -ForegroundColor Cyan
