@@ -1,5 +1,5 @@
 ﻿[Console]::OutputEncoding = [System.text.Encoding]::UTF8
-$Host.UI.RawUI.WindowTitle = "Simple antivirus - v1.0"
+$Host.UI.RawUI.WindowTitle = "AVOS: Startup Sentinel - v1.0"
 
 $localPath = $PSCommandPath
 $tempPath  = "$env:TEMP\update_temp.ps1"
@@ -10,7 +10,7 @@ $repoOwner = "Koti9013"
 $repoName  = "APOS_Startup-Sentinel"
 $branch    = "main"
 
-$baseUrl = "https://raw.githubusercontent.com/Koti9013/Simple-antivirus_PowerShell-edition/refs/heads/main/"
+$baseUrl = "https://raw.githubusercontent.com/Koti9013/AVOS_Startup-Sentinel/refs/heads/main/"
 
 $filesToUpdate = @(
     "README.md",
